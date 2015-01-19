@@ -4,7 +4,7 @@ var manipulatorCount = 0;
 
 // This is a wrapper over a cassowary variable. It will create an edit session
 // for it when dragged and listen for violations of motion constraints.
-function Manipulator(variable, domObject, axis) {
+function Manipulator(variable, axis) {
     this._variable = variable;
     this._solver = null;
     this._axis = axis;
@@ -16,8 +16,6 @@ function Manipulator(variable, domObject, axis) {
 
     this._hitConstraint = null;
     this._constraintCoefficient = 1;
-
-    var self = this;
 
     // There are three places that a variable gets a value from in here:
     //  1. touch manipulation (need to apply constraint when in violation)
@@ -44,16 +42,15 @@ function Manipulator(variable, domObject, axis) {
         // didn't create an animation, for example).
         trialAnimation: false
     };
-
-    // Clean up:
-    // There are three places that a variable gets a value from in here:
-    //  1. touch manipulation (need to apply constraint when in violation)
-    //  2. animation from velocity.
-    //  3. animation from constraint.
-    // Currently those three are all kind of mixed up; it might be better
-    // to have them all provide updates and then select which value we're
-    // going to use and whether it needs to be constrained or already has
-    // been.
+}
+// This method expects the Hammer.js onPan event as an argument.
+Manipulator.prototype.onPan = function(e) {
+    console.log(e);
+    return;
+    // Glue a gesture recognizer in. This should probably be moved outside of
+    // Manipulator (and rename Manipulator to Manipulable) so that we can have
+    // other things control variables.
+    var recognizer = new Hammer.Manager(domObject, { recognizers: [[Hammer.Pan, { direction: (axis == 'x') ? Hammer.DIRECTION_HORIZONTAL : Hammer.DIRECTION_VERTICAL}]] });
 
     addTouchOrMouseListener(domObject, {
         onTouchStart: function() {
@@ -237,7 +234,7 @@ Manipulator.prototype._createAnimation = function(velocity) {
         var motion = this._hitConstraint.createMotion(this._variable.valueOf());
         motion.setEnd(this._variable.valueOf() + violationDelta, velocity);
 
-        this._motionState.constraintAnimation = animation(motion,
+        this._motionState.constraintAnimation = Gravitas.createAnimation(motion,
             function() {
                 self._motionState.constraintAnimationPosition = motion.x();
                 self._motionState.constraintAnimationVelocity = motion.dx(); // unused.
@@ -261,7 +258,7 @@ Manipulator.prototype._createAnimation = function(velocity) {
     this._cancelAnimation('velocityAnimation');
     this._cancelAnimation('constraintAnimation');
     
-    this._motionState.velocityAnimation = animation(motion,
+    this._motionState.velocityAnimation = Gravitas.createAnimation(motion,
         function() {
             self._motionState.velocityAnimationPosition = motion.x();
             self._motionState.velocityAnimationVelocity = motion.dx();
