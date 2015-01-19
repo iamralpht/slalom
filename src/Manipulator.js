@@ -27,6 +27,7 @@ function Manipulator(variable, axis) {
         dragging: false,
         dragStart: 0,
         dragDelta: 0,
+        dragTriggerDelta: 0,
         // Animation from velocity (which the finger imparted)
         velocityAnimation: null,
         velocityAnimationPosition: 0,
@@ -46,16 +47,18 @@ function Manipulator(variable, axis) {
 // This method expects the Hammer.js onPan event as an argument.
 Manipulator.prototype.onPan = function(e) {
     if (e.type == 'panstart') {
+        var delta = (this._axis == 'x') ? e.deltaX : e.deltaY;
         // Kill other manipulators that are doing something to a related variable.
         this._motionContext.stopOthers(this._variable);
         // Start a new edit session.
         this._motionState.dragging = true;
         this._motionState.dragStart = this._variable.valueOf();
         this._motionState.dragDelta = 0;
+        this._motionState.dragTriggerDelta = delta;
         this._update();
     } else if (e.type == 'panmove') {
         var delta = (this._axis == 'x') ? e.deltaX : e.deltaY;
-        this._motionState.dragDelta = delta;
+        this._motionState.dragDelta = delta - this._motionState.dragTriggerDelta;
         this._update();
     } else if (e.type == 'panend') {
         // We want the velocity in px/sec; Hammer gives us px/ms.
