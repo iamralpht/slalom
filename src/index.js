@@ -7,7 +7,4 @@ var Slalom = {
     Box: require('./Box.js')
 };
 
-// Hacky.
-window.Slalom = Slalom;
-
 module.exports = Slalom;
