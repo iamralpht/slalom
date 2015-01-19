@@ -45,37 +45,27 @@ function Manipulator(variable, axis) {
 }
 // This method expects the Hammer.js onPan event as an argument.
 Manipulator.prototype.onPan = function(e) {
-    console.log(e);
-    return;
-    // Glue a gesture recognizer in. This should probably be moved outside of
-    // Manipulator (and rename Manipulator to Manipulable) so that we can have
-    // other things control variables.
-    var recognizer = new Hammer.Manager(domObject, { recognizers: [[Hammer.Pan, { direction: (axis == 'x') ? Hammer.DIRECTION_HORIZONTAL : Hammer.DIRECTION_VERTICAL}]] });
-
-    addTouchOrMouseListener(domObject, {
-        onTouchStart: function() {
-            // Kill other manipulators that are doing something to a related variable.
-            self._motionContext.stopOthers(self._variable);
-            // Start a new edit session.
-            self._motionState.dragging = true;
-            self._motionState.dragStart = variable.valueOf();
-            self._motionState.dragDelta = 0;
-            self._update();
-        },
-        onTouchMove: function(dx, dy) {
-            var delta = (axis == 'x') ? dx : dy;
-            self._motionState.dragDelta = delta;
-            self._update();
-        },
-        onTouchEnd: function(dx, dy, v) {
-            var velocity = (axis == 'x') ? v.x : v.y;
-            self._motionState.dragging = false;
-            self._motionState.trialAnimation = true;
-            if (self._motionContext) self._motionContext.update();
-            self._createAnimation(velocity);
-            self._motionState.trialAnimation = false;
-        }
-    });
+    if (e.type == 'panstart') {
+        // Kill other manipulators that are doing something to a related variable.
+        this._motionContext.stopOthers(this._variable);
+        // Start a new edit session.
+        this._motionState.dragging = true;
+        this._motionState.dragStart = this._variable.valueOf();
+        this._motionState.dragDelta = 0;
+        this._update();
+    } else if (e.type == 'panmove') {
+        var delta = (this._axis == 'x') ? e.deltaX : e.deltaY;
+        this._motionState.dragDelta = delta;
+        this._update();
+    } else if (e.type == 'panend') {
+        // We want the velocity in px/sec; Hammer gives us px/ms.
+        var velocity = -((this._axis == 'x') ? e.velocityX : e.velocityY) * 1000.0;
+        this._motionState.dragging = false;
+        this._motionState.trialAnimation = true;
+        if (this._motionContext) this._motionContext.update();
+        this._createAnimation(velocity);
+        this._motionState.trialAnimation = false;
+    }
 }
 // This method is called by the MotionContext when this manipulator is added to it.
 Manipulator.prototype._setMotionContext = function(motionContext) {
@@ -87,7 +77,7 @@ Manipulator.prototype._setMotionContext = function(motionContext) {
 Manipulator.prototype.name = function() { return this._name; }
 Manipulator.prototype.variable = function() { return this._variable; }
 Manipulator.prototype.createMotion = function(x, v) {
-    var m = new Friction(0.001);
+    var m = new Gravitas.Friction(0.001);
     m.set(x, v);
     return m;
 }
