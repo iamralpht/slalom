@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>Slalom and Gravitas Presentation</title>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href="presentation.css" rel="stylesheet"></link>
+<link href="../example.css" rel="stylesheet"></link>
+<link href="../box.css" rel="stylesheet"></link>
+<script src="../dependencies/hammer.min.js"></script>
+<script src="../dependencies/gravitas.js"></script>
+<script src="../dependencies/c.js"></script>
+<script src="../../slalom.js"></script>
+<script src="../prelude.js"></script>
+
+<!-- code for gravitas examples -->
+<script src="../../../gravitas.js/examples/utils/touch.js"></script>
+<script src="../../../gravitas.js/examples/utils/controls.js"></script>
+<script src="../../../gravitas.js/examples/Buttons/buttons.js"></script>
+<script src="../../../gravitas.js/examples/AndroidWear/androidwear.js"></script>
+<script src="../../../gravitas.js/examples/LockScreen/windows8lock.js"></script>
+<script src="../../../gravitas.js/examples/iTunesRadio/itunesradio.js"></script>
+<script src="../../../gravitas.js/examples/FallingDialogs/fallingdialogs.js"></script>
+
+<link href="../../../gravitas.js/examples/utils/example.css" rel="stylesheet"></link>
+<link href="../../../gravitas.js/examples/utils/controls.css" rel="stylesheet"></link>
+<link href="../../../gravitas.js/examples/Buttons/buttons.css" rel="stylesheet"></link>
+<link href="../../../gravitas.js/examples/AndroidWear/androidwear.css" rel="stylesheet"></link>
+<link href="../../../gravitas.js/examples/LockScreen/windows8lock.css" rel="stylesheet"></link>
+<link href="../../../gravitas.js/examples/iTunesRadio/itunesradio.css" rel="stylesheet"></link>
+<link href="../../../gravitas.js/examples/FallingDialogs/fallingdialogs.css" rel="stylesheet"></link>
+
+<link href="../../../gravitas.js/examples/FloatingActionButton/fab.css" rel="stylesheet"></link>
+
+</head>
+<body>
+<!-- gravitas examples -->
+<div id="buttonExample" class="buttonExample"></div>
+<div id="androidWearExample" class="androidWearExample"></div>
+<div id="lockScreenExample" class="lockScreenExample"></div>
+<div id="iTunesRadioExample" class="iTunesRadioExample"></div>
+<div id="FallingDialogsExample" class="FallingDialogsExample">
+    <div id="fallingDialogsExample"></div>
+    <div id="squishyDialogsExample"></div>
+</div>
+<div id="FloatingActionButtonExample" class="FloatingActionButtonExample">
+    <div id="fabExample" class="fabExample"></div>
+</div>
+<script src="../../../gravitas.js/examples/FloatingActionButton/fab.js" rel="stylesheet"></script>
+<!-- slalom examples (just iframe the article today) -->
+<div id="slalomExamples">
+    <iframe src="../../../iamralpht.github.io/constraints/index.html"></iframe>
+</div>
+
+<!-- slides! -->
+<div id="slide-1" class="body">
+<ul>
+ <li>Ralph Thomas &mdash; UI, graphics, mobile</li>
+ <li>Spent the last six years working on WebKit and a GL ES v2-based graphics engine targeting mobile devices</li>
+ <li>Previously led UI toolkit engineering at Palm on the immediate predecessor to webOS</li>
+</ul>
+</div>
+
+<div id="slide-2" class="body">
+<ul>
+ <li>Gravitas</li>
+ <li>Simple physics simulations</li>
+ <li>Three basic simulations
+  <ul>
+   <li>Friction</li>
+   <li>Gravity/Constant Acceleration</li>
+   <li>Spring</li>
+  </ul>
+ </li>
+</ul>
+</div>
+
+<div id="slide-3" class="body">
+<ul>
+ <li>Simple equations, no numerical integration</li>
+ <li>Assemble a simulation or reuse one, give it velocity and extents, then let it run!</li>
+ <li>All code and examples on github, licensed under APSLv2</li>
+</ul>
+</div>
+
+<div id="slide-4" class="body">
+<ul>
+ <li>Physics help touch interfaces create an intuitively real-feeling world</li>
+ <li>Physics improve coherence of interface by removing discontinuous motion</li>
+ <li>Physics communicate edges and boundaries unambiguously</li>
+</ul>
+</div>
+
+<div id="slide-5" class="body">
+<ul>
+ <li>All of those demos had hand-coded touch handlers</li>
+ <li>Many had hand-coded combinations of simulations</li>
+ <li>Boring, error-prone code slows iteration of design ideas</li>
+</ul>
+How can we do better?
+</div>
+
+<div id="slide-6" class="body">
+<ul>
+ <li>Slalom</li>
+ <li>Describe how objects move and the constraints on their motion</li>
+ <li>Use linear constraints to relate objects' positions</li>
+ <li>Add motion constraints to limit range of motion with physics simulations</li>
+</ul>
+</div>
+
+<div id="slide-7" class="body">
+<ul>
+ <li>Can express only linear constraints currently</li>
+ <li>Needs a non-numerical constraint solver for backtracking</li>
+ <li>Lots unexplored: no complex state, no non-touch-based animations...</li>
+</ul>
+</div>
+
+<div id="slide-8" class="body">
+<ul>
+ <li>Clean up, documentation, releases</li>
+ <li>More examples and demos</li>
+ <li>Visual editor for constraints</li>
+ <li>Incremental path for including Slalom in existing projects</li>
+ <li>Native ports</li>
+ <li>Research: non-linear constraint solver</li>
+</ul>
+</div>
+
+<div id="slide-9" class="body">
+ <a href="mailto:ralpht@gmail.com">ralpht@gmail.com</a><br>
+ <a href="http://iamralpht.github.io/">http://iamralpht.github.io/</a>
+</div>
+
+<script src="presentation.js"></script>
+</body>
+</html>
