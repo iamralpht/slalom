@@ -113,14 +113,7 @@ function makeGoogleMapsExample() {
     solver.add(eq(content.bottom, c.plus(content.y, contentHeight + extraContentHeight), medium));
     solver.add(eq(content.y, c.plus(height, scrollPosition), medium));
 
-    //var manip = new Manipulator(scrollPosition, parentElement, 'y');
-    //context.addManipulator(manip);
-    var manip = new Slalom.Manipulator(scrollPosition, 'y');
-    var hammer = new Hammer.Manager(parentElement);
-    hammer.add(new Hammer.Pan({direction: Hammer.DIRECTION_VERTICAL}));
-    hammer.on("panstart panmove panend pancancel", manip.onPan.bind(manip));
-    context.addManipulator(manip);
-
+    context.addManipulator(createManipulator(scrollPosition, parentElement, 'y'));
 
     // This is the physics model we use for our constraints: a critically damped spring, so no extra bounces.
     function physicsModel() { return new Gravitas.Spring(1, 440, 37); }

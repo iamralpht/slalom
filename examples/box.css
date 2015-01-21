@@ -1,0 +1,19 @@
+/* Simple appearance for undecorated boxes. */
+.box {
+    position: absolute;
+    top: 0; left: 0;
+    text-align: left;
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    padding: 5px;
+    font-size: 18px;
+    font-family: sans-serif;
+    pointer-events: none;
+    will-change: transform;
+    box-sizing: border-box;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+

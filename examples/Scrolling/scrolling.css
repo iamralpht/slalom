@@ -1,0 +1,27 @@
+.scrolling-example {
+    display: inline-block;
+    position: relative;
+    margin-top: 10px;
+    height: 200px;
+    width: 300px;
+    overflow: hidden;
+}
+
+.cards-container {
+    position: relative;
+    margin-top: 10px;
+    height: 180px;
+}
+
+.gravity-example {
+    position: relative;
+    margin: auto;
+    width: 300px;
+    height: 350px;
+}
+
+.pager-example {
+    position: relative;
+    height: 250px;
+}
+

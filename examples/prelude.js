@@ -20,3 +20,12 @@ var weakStay =     function(v, w) { return stay(v, weak,     w||0); };
 var mediumStay =   function(v, w) { return stay(v, medium,   w||0); };
 var strongStay =   function(v, w) { return stay(v, strong,   w||0); };
 var requiredStay = function(v, w) { return stay(v, required, w||0); };
+
+// Helper to make adding a simple Manipulator easier
+function createManipulator(variable, element, axis) {
+    var manip = new Slalom.Manipulator(variable, axis);
+    var hammer = new Hammer.Manager(element);
+    hammer.add(new Hammer.Pan({direction: (axis == 'y') ? Hammer.DIRECTION_VERTICAL : Hammer.DIRECTION_HORIZONTAL}));
+    hammer.on("panstart panmove panend pancancel", manip.onPan.bind(manip));
+    return manip;
+}
