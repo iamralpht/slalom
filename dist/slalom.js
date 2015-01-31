@@ -885,7 +885,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                  type:     "Inequality",
 	                  operator: tail[i][1],
 	                  left:     result,
-	                  right:    tail[i][3]
+	                  right:    tail[i][3],
+	                  strength: tail[i][4]
 	                };
 	              }
 	              return result;
@@ -898,16 +899,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	        peg$c74 = { type: "literal", value: "<", description: "\"<\"" },
 	        peg$c75 = ">",
 	        peg$c76 = { type: "literal", value: ">", description: "\">\"" },
-	        peg$c77 = "==",
-	        peg$c78 = { type: "literal", value: "==", description: "\"==\"" },
-	        peg$c79 = function(head, tail) {
+	        peg$c77 = "!required",
+	        peg$c78 = { type: "literal", value: "!required", description: "\"!required\"" },
+	        peg$c79 = "!strong",
+	        peg$c80 = { type: "literal", value: "!strong", description: "\"!strong\"" },
+	        peg$c81 = "!medium",
+	        peg$c82 = { type: "literal", value: "!medium", description: "\"!medium\"" },
+	        peg$c83 = "!weak",
+	        peg$c84 = { type: "literal", value: "!weak", description: "\"!weak\"" },
+	        peg$c85 = function(strength) { return strength; },
+	        peg$c86 = "==",
+	        peg$c87 = { type: "literal", value: "==", description: "\"==\"" },
+	        peg$c88 = function(head, tail) {
 	              var result = head;
 	              for (var i = 0; i < tail.length; i++) {
 	                result = {
 	                  type:     "Equality",
 	                  operator: tail[i][1],
 	                  left:     result,
-	                  right:    tail[i][3]
+	                  right:    tail[i][3],
+	                  strength: tail[i][4]
 	                };
 	              }
 	              return result;
@@ -2275,7 +2286,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function peg$parseInequalityExpression() {
-	      var s0, s1, s2, s3, s4, s5, s6, s7;
+	      var s0, s1, s2, s3, s4, s5, s6, s7, s8;
 
 	      s0 = peg$currPos;
 	      s1 = peg$parseAdditiveExpression();
@@ -2290,8 +2301,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (s6 !== peg$FAILED) {
 	              s7 = peg$parseAdditiveExpression();
 	              if (s7 !== peg$FAILED) {
-	                s4 = [s4, s5, s6, s7];
-	                s3 = s4;
+	                s8 = peg$parseStrengthExpression();
+	                if (s8 === peg$FAILED) {
+	                  s8 = peg$c44;
+	                }
+	                if (s8 !== peg$FAILED) {
+	                  s4 = [s4, s5, s6, s7, s8];
+	                  s3 = s4;
+	                } else {
+	                  peg$currPos = s3;
+	                  s3 = peg$c0;
+	                }
 	              } else {
 	                peg$currPos = s3;
 	                s3 = peg$c0;
@@ -2319,8 +2339,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	              if (s6 !== peg$FAILED) {
 	                s7 = peg$parseAdditiveExpression();
 	                if (s7 !== peg$FAILED) {
-	                  s4 = [s4, s5, s6, s7];
-	                  s3 = s4;
+	                  s8 = peg$parseStrengthExpression();
+	                  if (s8 === peg$FAILED) {
+	                    s8 = peg$c44;
+	                  }
+	                  if (s8 !== peg$FAILED) {
+	                    s4 = [s4, s5, s6, s7, s8];
+	                    s3 = s4;
+	                  } else {
+	                    peg$currPos = s3;
+	                    s3 = peg$c0;
+	                  }
 	                } else {
 	                  peg$currPos = s3;
 	                  s3 = peg$c0;
@@ -2395,8 +2424,72 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return s0;
 	    }
 
+	    function peg$parseStrength() {
+	      var s0;
+
+	      if (input.substr(peg$currPos, 9) === peg$c77) {
+	        s0 = peg$c77;
+	        peg$currPos += 9;
+	      } else {
+	        s0 = peg$FAILED;
+	        if (peg$silentFails === 0) { peg$fail(peg$c78); }
+	      }
+	      if (s0 === peg$FAILED) {
+	        if (input.substr(peg$currPos, 7) === peg$c79) {
+	          s0 = peg$c79;
+	          peg$currPos += 7;
+	        } else {
+	          s0 = peg$FAILED;
+	          if (peg$silentFails === 0) { peg$fail(peg$c80); }
+	        }
+	        if (s0 === peg$FAILED) {
+	          if (input.substr(peg$currPos, 7) === peg$c81) {
+	            s0 = peg$c81;
+	            peg$currPos += 7;
+	          } else {
+	            s0 = peg$FAILED;
+	            if (peg$silentFails === 0) { peg$fail(peg$c82); }
+	          }
+	          if (s0 === peg$FAILED) {
+	            if (input.substr(peg$currPos, 5) === peg$c83) {
+	              s0 = peg$c83;
+	              peg$currPos += 5;
+	            } else {
+	              s0 = peg$FAILED;
+	              if (peg$silentFails === 0) { peg$fail(peg$c84); }
+	            }
+	          }
+	        }
+	      }
+
+	      return s0;
+	    }
+
+	    function peg$parseStrengthExpression() {
+	      var s0, s1, s2;
+
+	      s0 = peg$currPos;
+	      s1 = peg$parse__();
+	      if (s1 !== peg$FAILED) {
+	        s2 = peg$parseStrength();
+	        if (s2 !== peg$FAILED) {
+	          peg$reportedPos = s0;
+	          s1 = peg$c85(s2);
+	          s0 = s1;
+	        } else {
+	          peg$currPos = s0;
+	          s0 = peg$c0;
+	        }
+	      } else {
+	        peg$currPos = s0;
+	        s0 = peg$c0;
+	      }
+
+	      return s0;
+	    }
+
 	    function peg$parseLinearExpression() {
-	      var s0, s1, s2, s3, s4, s5, s6, s7;
+	      var s0, s1, s2, s3, s4, s5, s6, s7, s8;
 
 	      s0 = peg$currPos;
 	      s1 = peg$parseInequalityExpression();
@@ -2405,20 +2498,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	        s3 = peg$currPos;
 	        s4 = peg$parse__();
 	        if (s4 !== peg$FAILED) {
-	          if (input.substr(peg$currPos, 2) === peg$c77) {
-	            s5 = peg$c77;
+	          if (input.substr(peg$currPos, 2) === peg$c86) {
+	            s5 = peg$c86;
 	            peg$currPos += 2;
 	          } else {
 	            s5 = peg$FAILED;
-	            if (peg$silentFails === 0) { peg$fail(peg$c78); }
+	            if (peg$silentFails === 0) { peg$fail(peg$c87); }
 	          }
 	          if (s5 !== peg$FAILED) {
 	            s6 = peg$parse__();
 	            if (s6 !== peg$FAILED) {
 	              s7 = peg$parseInequalityExpression();
 	              if (s7 !== peg$FAILED) {
-	                s4 = [s4, s5, s6, s7];
-	                s3 = s4;
+	                s8 = peg$parseStrengthExpression();
+	                if (s8 === peg$FAILED) {
+	                  s8 = peg$c44;
+	                }
+	                if (s8 !== peg$FAILED) {
+	                  s4 = [s4, s5, s6, s7, s8];
+	                  s3 = s4;
+	                } else {
+	                  peg$currPos = s3;
+	                  s3 = peg$c0;
+	                }
 	              } else {
 	                peg$currPos = s3;
 	                s3 = peg$c0;
@@ -2440,20 +2542,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	          s3 = peg$currPos;
 	          s4 = peg$parse__();
 	          if (s4 !== peg$FAILED) {
-	            if (input.substr(peg$currPos, 2) === peg$c77) {
-	              s5 = peg$c77;
+	            if (input.substr(peg$currPos, 2) === peg$c86) {
+	              s5 = peg$c86;
 	              peg$currPos += 2;
 	            } else {
 	              s5 = peg$FAILED;
-	              if (peg$silentFails === 0) { peg$fail(peg$c78); }
+	              if (peg$silentFails === 0) { peg$fail(peg$c87); }
 	            }
 	            if (s5 !== peg$FAILED) {
 	              s6 = peg$parse__();
 	              if (s6 !== peg$FAILED) {
 	                s7 = peg$parseInequalityExpression();
 	                if (s7 !== peg$FAILED) {
-	                  s4 = [s4, s5, s6, s7];
-	                  s3 = s4;
+	                  s8 = peg$parseStrengthExpression();
+	                  if (s8 === peg$FAILED) {
+	                    s8 = peg$c44;
+	                  }
+	                  if (s8 !== peg$FAILED) {
+	                    s4 = [s4, s5, s6, s7, s8];
+	                    s3 = s4;
+	                  } else {
+	                    peg$currPos = s3;
+	                    s3 = peg$c0;
+	                  }
 	                } else {
 	                  peg$currPos = s3;
 	                  s3 = peg$c0;
@@ -2473,7 +2584,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        if (s2 !== peg$FAILED) {
 	          peg$reportedPos = s0;
-	          s1 = peg$c79(s1, s2);
+	          s1 = peg$c88(s1, s2);
 	          s0 = s1;
 	        } else {
 	          peg$currPos = s0;
@@ -2721,14 +2832,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function _c(expr) {
+	        function strength(s) {
+	            if (!s) return c.Strength.medium;
+	            switch(s) {
+	                case "!weak": return c.Strength.weak;
+	                case "!medium": return c.Strength.medium;
+	                case "!strong": return c.Strength.strong;
+	                case "!required": return c.Strength.required;
+	            }
+	            return c.Strength.medium;
+	        }
 	        switch (expr.type) {
 	            case "Inequality":
 	                var op = (expr.operator == "<=") ? c.LEQ : c.GEQ;
-	                var i = new c.Inequality(_c(expr.left), op, _c(expr.right), weak);
+	                var i = new c.Inequality(_c(expr.left), op, _c(expr.right), strength(expr.strength));
 	                solver.addConstraint(i);
 	                return i;
 	            case "Equality":
-	                var i = new c.Equation(_c(expr.left), _c(expr.right), weak);
+	                var i = new c.Equation(_c(expr.left), _c(expr.right), strength(expr.strength));
 	                solver.addConstraint(i);
 	                return i;
 	            case "MultiplicativeExpression":
@@ -2742,7 +2863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            case "Variable":
 	                return findVar(expr.name);
 	            default:
-	                console.log("Unhandled expression to parse: " + expr.type);
+	                console.log("Unhandled expression to parse: " + expr.type + " expr: ", expr);
 	        }
 	    }
 	    function createManipulator(variable, element, axis) {

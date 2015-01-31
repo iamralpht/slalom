@@ -102,14 +102,24 @@ function assemble(desc, parentElement) {
     }
 
     function _c(expr) {
+        function strength(s) {
+            if (!s) return c.Strength.medium;
+            switch(s) {
+                case "!weak": return c.Strength.weak;
+                case "!medium": return c.Strength.medium;
+                case "!strong": return c.Strength.strong;
+                case "!required": return c.Strength.required;
+            }
+            return c.Strength.medium;
+        }
         switch (expr.type) {
             case "Inequality":
                 var op = (expr.operator == "<=") ? c.LEQ : c.GEQ;
-                var i = new c.Inequality(_c(expr.left), op, _c(expr.right), weak);
+                var i = new c.Inequality(_c(expr.left), op, _c(expr.right), strength(expr.strength));
                 solver.addConstraint(i);
                 return i;
             case "Equality":
-                var i = new c.Equation(_c(expr.left), _c(expr.right), weak);
+                var i = new c.Equation(_c(expr.left), _c(expr.right), strength(expr.strength));
                 solver.addConstraint(i);
                 return i;
             case "MultiplicativeExpression":
@@ -123,7 +133,7 @@ function assemble(desc, parentElement) {
             case "Variable":
                 return findVar(expr.name);
             default:
-                console.log("Unhandled expression to parse: " + expr.type);
+                console.log("Unhandled expression to parse: " + expr.type + " expr: ", expr);
         }
     }
     function createManipulator(variable, element, axis) {

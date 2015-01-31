@@ -149,14 +149,15 @@ AdditiveOperator
 
 InequalityExpression
   = head:AdditiveExpression
-    tail:(__ InequalityOperator __ AdditiveExpression)* {
+    tail:(__ InequalityOperator __ AdditiveExpression StrengthExpression?)* {
       var result = head;
       for (var i = 0; i < tail.length; i++) {
         result = {
           type:     "Inequality",
           operator: tail[i][1],
           left:     result,
-          right:    tail[i][3]
+          right:    tail[i][3],
+          strength: tail[i][4]
         };
       }
       return result;
@@ -168,16 +169,26 @@ InequalityOperator
   / "<"
   / ">"
 
+Strength
+  = "!required"
+  / "!strong"
+  / "!medium"
+  / "!weak"
+
+StrengthExpression
+  = (__ strength:Strength) { return strength; }
+
 LinearExpression
   = head:InequalityExpression
-    tail:(__ "==" __ InequalityExpression)* {
+    tail:(__ "==" __ InequalityExpression StrengthExpression?)* {
       var result = head;
       for (var i = 0; i < tail.length; i++) {
         result = {
           type:     "Equality",
           operator: tail[i][1],
           left:     result,
-          right:    tail[i][3]
+          right:    tail[i][3],
+          strength: tail[i][4]
         };
       }
       return result;
