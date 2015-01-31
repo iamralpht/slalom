@@ -22,6 +22,7 @@ var MotionContext = require('./MotionContext.js');
 var Box = require('./Box.js');
 var MotionConstraint = require('./MotionConstraint.js');
 var Manipulator = require('./Manipulator.js');
+var parser = require('./parser/grammar.pegjs');
 
 function assemble(desc) {
     var rootBox = new Box('');
@@ -68,11 +69,11 @@ function assemble(desc) {
         if (vars.hasOwnProperty(name)) return vars[name];
         // If we don't have it, and it doesn't contain a "." then create a variable.
         // XXX: Might want a "variable" rule so we don't get typos creating new variables.
-        if (name.indexOf('_') == -1) {
+        if (name.indexOf('.') == -1) {
             vars[name] = new c.Variable({name: name});
             return vars[name];
         }
-        var bits = name.split('_', 2);
+        var bits = name.split('.', 2);
         if (bits.length < 2 || !boxes.hasOwnProperty(bits[0])) return null;
 
         var box = boxes[bits[0]];
@@ -119,7 +120,7 @@ function assemble(desc) {
     }
     // XXX: Finish parsing; need to find boxes by ID and support strength/weights.
     for (var i = 0; i < desc.constraints.length; i++) {
-        var r = c.parser.parse(desc.constraints[i]);
+        var r = parser.parse(desc.constraints[i]);
         r.map(_c);
     }
     // motionConstraints: lhs, op, rhs, options

@@ -18,6 +18,10 @@ IdentifierStart
   / "$"
   / "_"
 
+IdentifierPart
+  = IdentifierStart
+  / "."
+
 WhiteSpace "whitespace"
   = [\t\v\f \u00A0\uFEFF]
 
@@ -83,7 +87,7 @@ Identifier "identifier"
   = name:IdentifierName { return name; }
 
 IdentifierName "identifier"
-  = start:IdentifierStart parts:IdentifierStart* {
+  = start:IdentifierStart parts:IdentifierPart* {
       return start + parts.join("");
     }
 

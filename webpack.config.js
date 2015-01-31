@@ -19,5 +19,10 @@ module.exports = {
     libraryTarget: 'umd',
     library: 'Slalom'
   },
-  plugins: plugins
+  plugins: plugins,
+  module: {
+    loaders: [
+        { test: /\.pegjs$/, loader: 'pegjs-loader' }
+    ]
+  }
 };
