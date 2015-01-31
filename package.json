@@ -24,6 +24,6 @@
   },
   "devDependencies": {
     "webpack": "^1.5.1",
-    "pegjs-loader": "0.1.1",
+    "pegjs-loader": "0.1.1"
   }
 }
