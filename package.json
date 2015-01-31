@@ -23,6 +23,7 @@
     "build-min": "COMPRESS=1 webpack src/index.js dist/slalom.min.js"
   },
   "devDependencies": {
-    "webpack": "^1.5.1"
+    "webpack": "^1.5.1",
+    "pegjs-loader": "0.1.1",
   }
 }
