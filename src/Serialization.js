@@ -48,8 +48,8 @@ function assemble(desc) {
         boxes[boxDescription.id] = b;
         b.element().id = boxDescription.id;
         if (boxDescription.className) b.element().className = boxDescription.className;
-        if (boxDescription.domWidth) b.domWidth = boxDescription.domWidth;
-        if (boxDescription.domHeight) b.domHeight = boxDescription.domHeight;
+        if (boxDescription.layoutWidth) b.layoutWidth = boxDescription.layoutWidth;
+        if (boxDescription.layoutHeight) b.layoutHeight = boxDescription.layoutHeight;
         if (boxDescription.children) {
             assembleBox(boxDescription.children, b);
         }

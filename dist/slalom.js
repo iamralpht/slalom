@@ -98,8 +98,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // a transform to scale to the desired width. This is handy because
 	    // changing the DOM width/height causes a full layout+repaint which
 	    // isn't very incremental in WebKit/Blink.
-	    this.domWidth = -1;
-	    this.domHeight = -1;
+	    this.layoutWidth = -1;
+	    this.layoutHeight = -1;
 
 	    this._children = [];
 
@@ -132,13 +132,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var xscale = 1;
 	    var yscale = 1;
 
-	    if (this.domWidth != -1) {
-	        xscale = w / this.domWidth;
-	        w = this.domWidth;
+	    if (this.layoutWidth != -1) {
+	        xscale = w / this.layoutWidth;
+	        w = this.layoutWidth;
 	    }
-	    if (this.domHeight != -1) {
-	        yscale = h / this.domHeight;
-	        h = this.domHeight;
+	    if (this.layoutHeight != -1) {
+	        yscale = h / this.layoutHeight;
+	        h = this.layoutHeight;
 	    }
 	    // Don't do rounding if we're doing transform-based scaling
 	    // because it makes it jumpy.
@@ -2667,8 +2667,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        boxes[boxDescription.id] = b;
 	        b.element().id = boxDescription.id;
 	        if (boxDescription.className) b.element().className = boxDescription.className;
-	        if (boxDescription.domWidth) b.domWidth = boxDescription.domWidth;
-	        if (boxDescription.domHeight) b.domHeight = boxDescription.domHeight;
+	        if (boxDescription.layoutWidth) b.layoutWidth = boxDescription.layoutWidth;
+	        if (boxDescription.layoutHeight) b.layoutHeight = boxDescription.layoutHeight;
 	        if (boxDescription.children) {
 	            assembleBox(boxDescription.children, b);
 	        }

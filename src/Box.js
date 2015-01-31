@@ -24,8 +24,8 @@ function Box(textContentOrElement) {
     // a transform to scale to the desired width. This is handy because
     // changing the DOM width/height causes a full layout+repaint which
     // isn't very incremental in WebKit/Blink.
-    this.domWidth = -1;
-    this.domHeight = -1;
+    this.layoutWidth = -1;
+    this.layoutHeight = -1;
 
     this._children = [];
 
@@ -58,13 +58,13 @@ Box.prototype.update = function(px, py) {
     var xscale = 1;
     var yscale = 1;
 
-    if (this.domWidth != -1) {
-        xscale = w / this.domWidth;
-        w = this.domWidth;
+    if (this.layoutWidth != -1) {
+        xscale = w / this.layoutWidth;
+        w = this.layoutWidth;
     }
-    if (this.domHeight != -1) {
-        yscale = h / this.domHeight;
-        h = this.domHeight;
+    if (this.layoutHeight != -1) {
+        yscale = h / this.layoutHeight;
+        h = this.layoutHeight;
     }
     // Don't do rounding if we're doing transform-based scaling
     // because it makes it jumpy.
