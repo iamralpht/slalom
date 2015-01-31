@@ -44,8 +44,7 @@ var scalingExample = {
 };
 
 function makeScalingExample(parentElement) {
-    var context = Slalom.Serialization.assemble(scalingExample);
-    parentElement.appendChild(context.boxes()[0].element());
+    Slalom.Serialization.assemble(scalingExample, parentElement);
 }
         
 makeScalingExample(document.getElementById('scaling-example'));

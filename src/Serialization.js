@@ -24,9 +24,22 @@ var MotionConstraint = require('./MotionConstraint.js');
 var Manipulator = require('./Manipulator.js');
 var parser = require('./parser/grammar.pegjs');
 
-function assemble(desc) {
-    var rootBox = new Box('');
-    rootBox.element().className = 'root';
+// This is something that looks like a Box, but doesn't expect to have any constraints. It just wraps the
+// element passed in from the outside.
+function RootBox(element) {
+    this._element = element;
+    this._children = [];
+}
+RootBox.prototype.element = function() { return this._element; }
+RootBox.prototype.addChild = function(box) { this._children.push(box); }
+RootBox.prototype.update = function(px, py) {
+    for (var i = 0; i < this._children.length; i++) {
+        this._children[i].update(px, py);
+    }
+}
+
+function assemble(desc, parentElement) {
+    var rootBox = new RootBox(parentElement);
 
     var context = new MotionContext();
     var solver = context.solver();

@@ -14,6 +14,4 @@ var scrollingExample = {
     ]
 }
 
-var context = Slalom.Serialization.assemble(scrollingExample);
-
-document.body.appendChild(context.boxes()[0].element());
+Slalom.Serialization.assemble(scrollingExample, document.body);
