@@ -2804,6 +2804,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var vars = {};
 	    
 	    function findVar(name) {
+	        if (!name) return undefined;
 	        function makeVar(box, name) {
 	            if (box.hasOwnProperty(name) && box[name].isExternal)
 	                return box[name];
@@ -2866,12 +2867,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	                console.log("Unhandled expression to parse: " + expr.type + " expr: ", expr);
 	        }
 	    }
-	    function createManipulator(variable, element, axis) {
-	        var manip = new Manipulator(variable, axis);
+	    function createManipulator(context, element, x, y) {
+	        var manipx = null;
+	        var manipy = null;
+	        if (x) manipx = new Manipulator(x, 'x');
+	        if (y) manipy = new Manipulator(y, 'y');
+
+	        var direction = Hammer.DIRECTION_VERTICAL;
+	        if (x && y) direction = Hammer.DIRECTION_ALL;
+	        else if (x) direction = Hammer.DIRECTION_HORIZONTAL;
+
 	        var hammer = new Hammer.Manager(element);
-	        hammer.add(new Hammer.Pan({direction: (axis == 'y') ? Hammer.DIRECTION_VERTICAL : Hammer.DIRECTION_HORIZONTAL}));
-	        hammer.on("panstart panmove panend pancancel", manip.onPan.bind(manip));
-	        return manip;
+	        hammer.add(new Hammer.Pan({direction: direction}));
+
+	        function onEvent(manipx, manipy, e) {
+	            // XXX: Handle velocity wrangling for animation here.
+	            if (manipx) manipx.onPan(e);
+	            if (manipy) manipy.onPan(e);
+	        }
+
+	        hammer.on("panstart panmove panend pancancel", onEvent.bind(null, manipx, manipy));
+
+	        if (manipx) context.addManipulator(manipx);
+	        if (manipy) context.addManipulator(manipy);
 	    }
 	    // XXX: Finish parsing; need to find boxes by ID and support strength/weights.
 	    for (var i = 0; i < desc.constraints.length; i++) {
@@ -2881,12 +2899,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // motionConstraints: lhs, op, rhs, options
 	    for (var i = 0; i < desc.motionConstraints.length; i++) {
 	        var mc = desc.motionConstraints[i];
-	        context.addMotionConstraint(new MotionConstraint(findVar(mc.lhs), mc.op, mc.rhs, mc.options));
+	        if (Array.isArray(mc)) {
+	            context.addMotionConstraint(new MotionConstraint(findVar(mc[0]), mc[1], mc[2], mc[3]));
+	        } else {
+	            // Legacy dictionary-based syntax.
+	            context.addMotionConstraint(new MotionConstraint(findVar(mc.lhs), mc.op, mc.rhs, mc.options));
+	        }
 	    }
 	    // manipulators: variable, box, axis
 	    for (var i = 0; i < desc.manipulators.length; i++) {
 	        var m = desc.manipulators[i];
-	        context.addManipulator(createManipulator(findVar(m.variable), boxes[m.box].element(), m.axis));
+	        if (m.axis) {
+	            // Move to new syntax.
+	            m[m.axis] = m.variable;
+	        }
+	        createManipulator(context, boxes[m.box].element(), findVar(m.x), findVar(m.y));
 	    }
 
 	    return context;
