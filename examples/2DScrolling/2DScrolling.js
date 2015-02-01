@@ -15,8 +15,8 @@ var scrollingExample = {
         // Specify the bounds of the image and hint its position.
         "image.right == image.left + 800 !strong",
         "image.bottom == image.top + 800 !strong",
-        "image.left == 0",// !weak",
-        "image.top == 0",// !weak"
+        "image.left == 0 !weak",
+        "image.top == 0 !weak"
     ],
     motionConstraints: [
         // Ensure that the image stays within the clip with springs.
