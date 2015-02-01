@@ -29,13 +29,16 @@ var scalingExample = {
         // Pin the bottom of the box to the bottom of the parent.
         "scaleBox.bottom == " + parentHeight,
         // Center the box horizontally.
-        "centerX == " + (parentWidth / 2)
+        "centerX == " + (parentWidth / 2) + " !weak"
     ],
     motionConstraints: [
         // Constrain the scale with springs. We could constrain the top or something else
         // and backtracking would ensure that we got the same effect.
-        { lhs: "scale", op: ">=", rhs: 0.45 },
-        { lhs: "scale", op: "<=", rhs: 1 }
+        [ "scale", ">=", 0.45 ],
+        [ "scale", "<=", 1 ],
+        // Keep the photo on the screen, too.
+        [ "scaleBox.left", ">=", 0, { overdragCoefficient: 0 } ],
+        [ "scaleBox.right", "<=", parentWidth, { overdragCoefficient: 0 } ]
     ],
     manipulators: [
         // Dragging in "y" should move the top of the scaleBox.
