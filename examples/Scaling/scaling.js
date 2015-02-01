@@ -39,7 +39,7 @@ var scalingExample = {
     ],
     manipulators: [
         // Dragging in "y" should move the top of the scaleBox.
-        { variable: "scaleBox.top", box: "scaleBox", axis: "y" }
+        { box: "scaleBox", y: "scaleBox.top", x: "centerX" }
     ]
 };
 
