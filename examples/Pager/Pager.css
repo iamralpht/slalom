@@ -11,10 +11,12 @@
 .content>.list-item {
     display: inline-block;
     font-size: 40px;
+    font-family: sans-serif;
     background-color: #404040;
     color: white;
     width: 150px;
     height: 150px;
     line-height: 260px;
     background-size: cover;
+    -webkit-transform: translateZ(0); /* iOS perf incantation; paint cost is high on these items :( */
 }
