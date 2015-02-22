@@ -1,0 +1,20 @@
+.clip {
+    overflow: hidden;
+    box-shadow: inset 0px 0px 10px 2px rgba(0, 0, 0, 0.5);
+    background-color: #888;
+}
+.content {
+    position: absolute;
+    overflow: hidden;
+    font-size: 0; /* no spacing between child inline-blocks */
+}
+.content>.list-item {
+    display: inline-block;
+    font-size: 40px;
+    background-color: #404040;
+    color: white;
+    width: 150px;
+    height: 150px;
+    line-height: 260px;
+    background-size: cover;
+}
