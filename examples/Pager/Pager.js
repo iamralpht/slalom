@@ -27,8 +27,8 @@ var pagerExample = {
     motionConstraints: [
         // Constrain the content's left and right to be within the bounds, then constrain
         // left to be some multiple of 150 to get that pager behavior.
-        [ "content.left", "<=", 0 ],
-        [ "content.right", ">=", 750],
+        [ "content.left", "<=", 0, { physicsModel: Slalom.MotionConstraint.criticallyDamped } ],
+        [ "content.right", ">=", 750, { physicsModel: Slalom.MotionConstraint.criticallyDamped } ],
         // Use modulo, but don't consider this constraint while dragging (dragging is basically unconstrained)
         // and critically damp it. It feels weird when underdamped (it overshoots when snapping).
         [ "content.left", "%", 150, { overdragCoefficient: 0, physicsModel: Slalom.MotionConstraint.criticallyDamped }]
